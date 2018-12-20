@@ -78,9 +78,9 @@ module.exports = function (ctx) {
       // workboxPluginMode: 'InjectManifest',
       // workboxOptions: {},
       manifest: {
-        // name: 'Quasar App',
-        // short_name: 'Quasar-PWA',
-        // description: 'Best PWA App in town!',
+        name: 'Acorda Ônibus',
+        short_name: 'Acorda-Ônibus',
+        description: 'Applicação destinada a quem deseja dormir no ônibus sem se preocupar na hora de acordar',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

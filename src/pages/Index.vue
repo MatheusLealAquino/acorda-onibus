@@ -83,8 +83,11 @@ export default {
     },
     successWatchPostion (pos) {
       let position = pos.coords
+      let audio = new Audio('statics/audios/alarm1.mp3')
+      audio.pause()
+
       if (this.place.latitude === position.latitude && this.place.longitude === position.longitude) {
-        console.log('Parabéns, você alcançou o destino')
+        audio.play()
         navigator.geolocation.clearWatch(this.actualLocation)
       }
     },
@@ -95,7 +98,7 @@ export default {
   mounted () {
     let options = {
       enableHighAccuracy: true,
-      timeout: 5000,
+      timeout: 3000,
       maximumAge: 0
     }
 
