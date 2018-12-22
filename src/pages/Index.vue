@@ -80,6 +80,9 @@ export default {
     selected (place) {
       this.place = place
       this.drawComponent = true
+      if (typeof cordova !== 'undefined') {
+        cordova.plugins.foregroundService.start('GPS Running', 'Background Service')
+      }
     },
     successWatchPostion (pos) {
       let position = pos.coords
@@ -89,6 +92,9 @@ export default {
       if (this.place.latitude === position.latitude && this.place.longitude === position.longitude) {
         audio.play()
         navigator.geolocation.clearWatch(this.actualLocation)
+        if (typeof cordova !== 'undefined') {
+          cordova.plugins.foregroundService.stop()
+        }
       }
     },
     error (err) {
