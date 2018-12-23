@@ -1,18 +1,16 @@
+function deg2rad (deg) {
+  return deg * (Math.PI / 180)
+}
+
 const mapHelper = {
-  distance: function (latInicial, latFinal, longInicial, longFinal) {
-    let d2r = 0.017453292519943295769236
-
-    let dlong = (longFinal - longInicial) * d2r
-    let dlat = (latFinal - latInicial) * d2r
-
-    let tempSin = Math.sin(dlat / 2.0)
-    let tempCos = Math.cos(latInicial * d2r)
-    let tempSin2 = Math.sin(dlong / 2.0)
-
-    let a = (tempSin * tempSin) + (tempCos * tempCos) * (tempSin2 * tempSin2)
-    let c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a))
-
-    return 6368.1 * c
+  distance: function (lat1, lat2, lon1, lon2) {
+    var R = 6371 // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1) // deg2rad below
+    var dLon = deg2rad(lon2 - lon1)
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    var d = R * c // Distance in km
+    return d * 1000
   }
 }
 
