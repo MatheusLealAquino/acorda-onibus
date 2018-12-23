@@ -31,7 +31,7 @@
         inset-delimiter
       >
         <q-list-header>Menu</q-list-header>
-        <q-item @click.native="openURL('http://quasar-framework.org')">
+        <q-item @click="$router.push('/')">
           <q-item-side icon="commute" />
           <q-item-main label="Iniciar Viagem" />
         </q-item>

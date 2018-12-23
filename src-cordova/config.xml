@@ -2,8 +2,8 @@
 <widget id="com.matheus.acordaOnibus" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Acorda Ônibus</name>
     <description>Applicação destinada a quem deseja dormir no ônibus sem se preocupar na hora de acordar</description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="matheusleal.a@gmail.com" href="https://www.matheusleal.com.br/">
+        Matheus
     </author>
     <content src="index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
@@ -16,6 +16,10 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <icon density="mdpi" src="res/android/logo-48-mdpi.png" />
+        <icon density="hdpi" src="res/android/logo-72-hdpi.png" />
+        <icon density="xhdpi" src="res/android/logo-96-xhdpi.png" />
+        <icon density="xxhdpi" src="res/android/logo-144-xxhdpi.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -23,5 +27,8 @@
     </platform>
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-plugin-foreground-service" spec="^1.1.0" />
-    <engine name="android" spec="~7.1.4" />
+    <plugin name="cordova.plugins.diagnostic" spec="^4.0.10" />
+    <plugin name="cordova-plugin-dialogs" spec="^2.0.1" />
+    <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
+    <engine name="android" spec="^7.1.4" />
 </widget>

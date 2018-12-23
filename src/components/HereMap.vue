@@ -45,7 +45,8 @@ export default {
       platform: {},
       behavior: {},
       ui: {},
-      circle: {}
+      circle: {},
+      clusteringLayer: {}
     }
   },
   props: {
@@ -55,7 +56,8 @@ export default {
     lng: String,
     width: String,
     height: String,
-    range: Number
+    range: Number,
+    actualLocation: Object
   },
   methods: {
     initializeMap (){
@@ -98,12 +100,35 @@ export default {
       this.map.removeObject(this.circle)
       this.map.addObject(circle)
       this.circle = circle
+    },
+    addCluesteredDataProvider (latitude, longitude) {
+      let dataPoints = [new H.clustering.DataPoint(latitude, longitude)]
+      let clusteredDataProvider = new H.clustering.Provider(dataPoints, {
+        clusteringOptions: {
+          eps: 32,
+          minWeight: 2
+        }
+      })
+      this.clusteringLayer = new H.map.layer.ObjectLayer(clusteredDataProvider)
+      this.map.addLayer(this.clusteringLayer)
+    },
+    updateClusteredDataProvider (latitude, longitude) {
+      this.map.removeLayer(this.clusteringLayer)
+      this.addCluesteredDataProvider(latitude, longitude)
     }
   },
   watch: {
     range: function (newVal, oldVal) {
       this.range = newVal
       this.updateRangeCircle (this.createCircle())
+    },
+    actualLocation: {
+      handler (newVal) {
+        this.actualLocation.latitude = newVal.latitude
+        this.actualLocation.longitude = newVal.longitude 
+        this.updateClusteredDataProvider(newVal.latitude, newVal.longitude)
+      },
+      deep: true
     }
   },
   created () {
@@ -118,6 +143,8 @@ export default {
     this.addMarker()
     this.circle = this.createCircle();
     this.addRangeCircle(this.circle)
+    if(this.actualLocation.latitude !=0 && this.actualLocation.longitude != 0)
+    this.addCluesteredDataProvider(this.actualLocation.latitude, this.actualLocation.longitude)
     // addDraggableMarker(this.map, marker, this.behavior)
   }
 }

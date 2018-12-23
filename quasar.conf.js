@@ -4,8 +4,7 @@ module.exports = function (ctx) {
   return {
     // app plugins (/src/plugins)
     plugins: [
-      'axios',
-      'mapHelper'
+      'axios'
     ],
     css: [
       'app.styl'

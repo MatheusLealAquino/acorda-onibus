@@ -16,9 +16,4 @@ const mapHelper = {
   }
 }
 
-export default ({ Vue }) => {
-  // for use inside Vue files through this.$axios
-  Vue.prototype.$mapHelper = mapHelper
-}
-
-export { mapHelper }
+export default { mapHelper }
