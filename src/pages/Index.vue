@@ -16,6 +16,7 @@
             appCode='11WTT8oQltE8VNuMbzptnw'
             :lat="place.latitude.toString()"
             :lng="place.longitude.toString()"
+            :range="rangeLocation"
             width='100%'
             height='300px' />
         </div>
@@ -25,6 +26,7 @@
             appCode='11WTT8oQltE8VNuMbzptnw'
             :lat="place.latitude.toString()"
             :lng="place.longitude.toString()"
+            :range="rangeLocation"
             width='100vw'
             height='200px' />
         </div>
@@ -42,7 +44,7 @@
         </q-field>
       </div>
 
-      <div class="q-pt-md q-pb-sm"> <q-btn icon="add_location" label="Iniciar Viagem" /></div>
+      <div class="q-pt-md q-pb-sm"> <q-btn icon="add_location" label="Iniciar Viagem" /> </div>
     </div>
   </q-page>
 </template>

@@ -5,6 +5,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 
 /* function addDraggableMarker (map, marker, behavior) {
   // disable the default draggability of the underlying map
@@ -12,7 +13,6 @@
 
   map.addEventListener('dragstart', function (ev) {
     var target = ev.target
-    // eslint-disable-next-line
     if (target instanceof H.map.Marker) {
       behavior.disable()
     }
@@ -22,7 +22,6 @@
   // when dragging has completed
   map.addEventListener('dragend', function (ev) {
     var target = ev.target
-    // eslint-disable-next-line
     if (target instanceof mapsjs.map.Marker) {
       behavior.enable()
     }
@@ -32,7 +31,6 @@
   // as necessary
   map.addEventListener('drag', function (ev) {
     var target = ev.target, pointer = ev.currentPointer
-    // eslint-disable-next-line
     if (target instanceof mapsjs.map.Marker) {
       target.setPosition(map.screenToGeo(pointer.viewportX, pointer.viewportY))
     }
@@ -46,7 +44,8 @@ export default {
       map: {},
       platform: {},
       behavior: {},
-      ui: {}
+      ui: {},
+      circle: {}
     }
   },
   props: {
@@ -55,10 +54,59 @@ export default {
     lat: String,
     lng: String,
     width: String,
-    height: String
+    height: String,
+    range: Number
+  },
+  methods: {
+    initializeMap (){
+      this.map = new H.Map(
+        this.$refs.map,
+        this.platform.createDefaultLayers().normal.map,
+        {
+          zoom: 17,
+          center: { lng: this.lng, lat: this.lat }
+        }
+      )
+    },
+    addMarker () {
+      this.behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map))
+      this.ui = H.ui.UI.createDefault(this.map, this.platform.createDefaultLayers())
+      let marker = new H.map.Marker({lat:this.lat, lng:this.lng})
+      marker.draggable = true
+      this.map.addObject(marker)
+    },
+    createCircle () {
+      let circle = new H.map.Circle(
+        // The central point of the circle
+        {lat:this.lat, lng:this.lng},
+        // The radius of the circle in meters
+        this.range,
+        {
+          style: {
+            strokeColor: 'rgba(55, 85, 170, 0.6)', // Color of the perimeter
+            lineWidth: 2,
+            fillColor: 'rgba(0, 128, 0, 0.7)'  // Color of the circle
+          }
+        }
+      )
+      return circle
+    },
+    addRangeCircle (circle) {
+      this.map.addObject(circle)
+    },
+    updateRangeCircle (circle) {
+      this.map.removeObject(this.circle)
+      this.map.addObject(circle)
+      this.circle = circle
+    }
+  },
+  watch: {
+    range: function (newVal, oldVal) {
+      this.range = newVal
+      this.updateRangeCircle (this.createCircle())
+    }
   },
   created () {
-    // eslint-disable-next-line
     this.platform = new H.service.Platform({
       'app_id': this.appId,
       'app_code': this.appCode,
@@ -66,25 +114,10 @@ export default {
     })
   },
   mounted () {
-    // eslint-disable-next-line
-    this.map = new H.Map(
-      this.$refs.map,
-      this.platform.createDefaultLayers().normal.map,
-      {
-        zoom: 15,
-        center: { lng: this.lng, lat: this.lat }
-      }
-    )
-    // eslint-disable-next-line
-    this.behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map))
-    // eslint-disable-next-line
-    this.ui = H.ui.UI.createDefault(this.map, this.platform.createDefaultLayers())
-    // eslint-disable-next-line
-    let marker = new H.map.Marker({lat:this.lat, lng:this.lng})
-    marker.draggable = true
-    // eslint-disable-next-line
-    this.map.addObject(marker)
-    // eslint-disable-next-line
+    this.initializeMap()
+    this.addMarker()
+    this.circle = this.createCircle();
+    this.addRangeCircle(this.circle)
     // addDraggableMarker(this.map, marker, this.behavior)
   }
 }
