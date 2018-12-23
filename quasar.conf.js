@@ -57,7 +57,9 @@ module.exports = function (ctx) {
         'QItemSide',
         'QInput',
         'QSearch',
-        'QAutocomplete'
+        'QAutocomplete',
+        'QSlider',
+        'QField'
       ],
       directives: [
         'Ripple'

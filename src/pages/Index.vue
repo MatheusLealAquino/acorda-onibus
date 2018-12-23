@@ -1,8 +1,7 @@
 <template>
-  <q-page padding>
-
+  <q-page>
     <div class="row justify-center">
-      <div class="col-md-12">
+      <div class="col-md-12 q-pr-xl q-pl-xl q-pt-md">
         <q-search icon="place" v-model="location" float-label="Onde devo te acordar?">
             <q-autocomplete
               separator
@@ -27,11 +26,24 @@
             :lat="place.latitude.toString()"
             :lng="place.longitude.toString()"
             width='100vw'
-            height='300px' />
+            height='200px' />
         </div>
       </div>
     </div>
 
+    <div class="row q-pt-sm justify-center" v-if="drawComponent">
+      <div class="col-md-12 q-pr-sm q-pl-sm">
+        <q-field
+          icon="map"
+          label="Distância da área de detecção"
+          helper="Distância anterior ao ponto desejado para iniciar alarme"
+        >
+          <q-slider v-model="rangeLocation" :min="40" :max="200" label-always color="faded"/>
+        </q-field>
+      </div>
+
+      <div class="q-pt-md q-pb-sm"> <q-btn icon="add_location" label="Iniciar Viagem" /></div>
+    </div>
   </q-page>
 </template>
 
@@ -64,9 +76,9 @@ export default {
   data () {
     return {
       location: '',
-      place: '',
+      place: {latitude: 0, longitude: 0},
       drawComponent: false,
-      actualLocation: ''
+      rangeLocation: 50
     }
   },
   methods: {
@@ -80,7 +92,7 @@ export default {
     selected (place) {
       this.place = place
       this.drawComponent = true
-      if (typeof cordova !== 'undefined') {
+      if (this.$q.platform.is.cordova) {
         cordova.plugins.foregroundService.start('GPS Running', 'Background Service')
       }
     },
@@ -88,11 +100,10 @@ export default {
       let position = pos.coords
       let audio = new Audio('statics/audios/alarm1.mp3')
       audio.pause()
-
       if (this.place.latitude === position.latitude && this.place.longitude === position.longitude) {
         audio.play()
         navigator.geolocation.clearWatch(this.actualLocation)
-        if (typeof cordova !== 'undefined') {
+        if (this.$q.platform.is.cordova) {
           cordova.plugins.foregroundService.stop()
         }
       }

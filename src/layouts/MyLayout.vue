@@ -6,11 +6,37 @@
         :glossy="$q.theme === 'mat'"
         :inverted="$q.theme === 'ios'"
       >
+        <q-btn
+            flat
+            dense
+            round
+            @click="leftDrawerOpen = !leftDrawerOpen"
+            aria-label="Menu"
+          >
+            <q-icon name="menu" />
+        </q-btn>
+
         <q-toolbar-title>
           Acorda Ônibus
         </q-toolbar-title>
       </q-toolbar>
     </q-layout-header>
+    <q-layout-drawer
+      v-model="leftDrawerOpen"
+      :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null"
+    >
+      <q-list
+        no-border
+        link
+        inset-delimiter
+      >
+        <q-list-header>Menu</q-list-header>
+        <q-item @click.native="openURL('http://quasar-framework.org')">
+          <q-item-side icon="commute" />
+          <q-item-main label="Iniciar Viagem" />
+        </q-item>
+      </q-list>
+    </q-layout-drawer>
 
     <q-page-container>
       <router-view />
@@ -25,6 +51,7 @@ export default {
   name: 'MyLayout',
   data () {
     return {
+      leftDrawerOpen: false
     }
   },
   methods: {
