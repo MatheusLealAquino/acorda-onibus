@@ -30,5 +30,7 @@
     <plugin name="cordova.plugins.diagnostic" spec="^4.0.10" />
     <plugin name="cordova-plugin-dialogs" spec="^2.0.1" />
     <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
+    <plugin name="cordova-plugin-brightness" spec="^0.2.0" />
+    <plugin name="org.awokenwell.proximity" spec="https://github.com/awoken-well/cordova-plugin-proximity.git" />
     <engine name="android" spec="^7.1.4" />
 </widget>

@@ -45,8 +45,11 @@
           <q-slider v-model="rangeLocation" ref="rangeLocation" :min="40" :max="250" label-always color="faded"/>
         </q-field>
       </div>
-
-      <div class="q-pt-md q-pb-sm"> <q-btn icon="add_location" label="Iniciar Viagem" @click="beginTravel" /> </div>
+      <div class="q-pt-md q-pb-sm">
+        <q-btn icon="add_location" label="Iniciar Viagem" v-if="isAvaliable" @click="beginTravel" />
+        <q-btn icon="stop" label="Terminar Viagem" v-if="!isAvaliable" @click="cancelTravel" />
+        <q-btn icon="explore" label="Modo Viagem" v-if="!isAvaliable && $q.platform.is.cordova" @click="blockScreen" />
+      </div>
     </div>
   </q-page>
 </template>
@@ -57,6 +60,18 @@
 <script>
 import HereMap from '../components/HereMap.vue'
 import mapHelper from '../helper/mapHelper.js'
+
+function disableClick () {
+  document.body.addEventListener('click', function (e) {
+    e.preventDefault()
+  })
+}
+
+function enableClick () {
+  document.body.removeEventListener('click', function (e) {
+    console.log('removed')
+  })
+}
 
 function createPlaces (items) {
   let places = []
@@ -86,7 +101,7 @@ export default {
       drawComponent: false,
       rangeLocation: 50,
       locationObject: undefined,
-      playAudio: true
+      isAvaliable: true
     }
   },
   methods: {
@@ -112,17 +127,15 @@ export default {
       let distance = mapHelper.mapHelper.distance(position.latitude, this.place.latitude, position.longitude, this.place.longitude)
       // Initialize audio object
       let audio = new Audio('statics/audios/alarm1.mp3')
-      audio.pause()
       // Verify if is in range and audio is not playing
-      if (distance <= this.rangeLocation && this.playAudio) {
+      if (distance <= this.rangeLocation && this.isAvaliable) {
         audio.play()
-        this.playAudio = false
 
         if (this.$q.platform.is.cordova) {
           navigator.vibrate(5000)
           navigator.notification.confirm('Desativar alarme ?', buttonIndex => {
             if (buttonIndex === 1) {
-              this.playAudio = true
+              this.isAvaliable = true
               audio.pause()
               navigator.vibrate(0)
               cordova.plugins.foregroundService.stop()
@@ -130,7 +143,7 @@ export default {
             }
           }, 'Finalizar alarme', ['Sim', 'Não'])
         } else {
-          this.playAudio = true
+          this.isAvaliable = true
           navigator.geolocation.clearWatch(this.locationObject)
         }
       }
@@ -140,7 +153,7 @@ export default {
     },
     beginTravel () {
       if (this.$q.platform.is.cordova) {
-        cordova.plugins.foregroundService.start('GPS Running', 'Background Service', 'departure_board')
+        cordova.plugins.foregroundService.start('Viagem Iniciada', '', 'departure_board')
       }
       if (this.locationObject !== undefined) {
         navigator.geolocation.clearWatch(this.locationObject)
@@ -151,8 +164,44 @@ export default {
         timeout: 3000,
         maximumAge: 0
       }
-
+      this.isAvaliable = false
       this.locationObject = navigator.geolocation.watchPosition(this.successWatchPostion, this.error, options)
+    },
+    cancelTravel () {
+      this.isAvaliable = true
+      navigator.geolocation.clearWatch(this.locationObject)
+      if (this.$q.platform.is.cordova) {
+        cordova.plugins.foregroundService.stop()
+        this.backScreenToNormal()
+      }
+    },
+    blockScreen () {
+      let brightness = cordova.plugins.brightness
+      brightness.getBrightness((value) => {
+        if (value === '-1.0') {
+          brightness.setBrightness(0)
+          brightness.setKeepScreenOn(true)
+          // Activate the sensors on cellphone
+          navigator.proximity.enableSensor()
+          setInterval(function () {
+            navigator.proximity.getProximityState(state => {
+              if (state) {
+                disableClick()
+              } else {
+                enableClick()
+              }
+            })
+          }, 1000)
+        } else {
+          this.backScreenToNormal()
+        }
+      })
+    },
+    backScreenToNormal () {
+      let brightness = cordova.plugins.brightness
+      brightness.setBrightness(-1)
+      brightness.setKeepScreenOn(false)
+      navigator.proximity.disableSensor()
     }
   },
   mounted () {
