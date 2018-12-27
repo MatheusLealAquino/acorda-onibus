@@ -128,7 +128,7 @@ export default {
       // Initialize audio object
       let audio = new Audio('statics/audios/alarm1.mp3')
       // Verify if is in range and audio is not playing
-      if (distance <= this.rangeLocation && this.isAvaliable) {
+      if (distance <= this.rangeLocation && !this.isAvaliable) {
         audio.play()
 
         if (this.$q.platform.is.cordova) {
