@@ -130,20 +130,23 @@ export default {
       // Verify if is in range and audio is not playing
       if (distance <= this.rangeLocation && !this.isAvaliable) {
         audio.play()
+        this.isAvaliable = true
+        audio.loop = true
 
         if (this.$q.platform.is.cordova) {
           navigator.vibrate(5000)
           navigator.notification.confirm('Desativar alarme ?', buttonIndex => {
             if (buttonIndex === 1) {
-              this.isAvaliable = true
+              audio.loop = false
               audio.pause()
               navigator.vibrate(0)
               cordova.plugins.foregroundService.stop()
               navigator.geolocation.clearWatch(this.locationObject)
+              this.backScreenToNormal()
             }
           }, 'Finalizar alarme', ['Sim', 'Não'])
         } else {
-          this.isAvaliable = true
+          audio.pause()
           navigator.geolocation.clearWatch(this.locationObject)
         }
       }
