@@ -1,7 +1,7 @@
 {
     "name": "com.matheus.acordaonibus",
     "displayName": "Acorda Ônibus",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Applicação destinada a quem deseja dormir no ônibus sem se preocupar na hora de acordar",
     "main": "index.js",
     "scripts": {

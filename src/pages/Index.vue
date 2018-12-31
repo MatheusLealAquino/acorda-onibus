@@ -142,7 +142,9 @@ export default {
               navigator.vibrate(0)
               navigator.geolocation.clearWatch(this.locationObject)
               this.backScreenToNormal()
-              this.showAdMob()
+              if (window.plugins && window.plugins.AdMob) {
+                this.showAdMob()
+              }
             }
           }, 'Finalizar alarme', ['Sim', 'Não'])
         } else {
@@ -197,15 +199,12 @@ export default {
       })
     },
     showAdMob () {
-      if (window.plugins && window.plugins.AdMob) {
-        let admob = window.plugins.AdMob
-        admob.interstitial.config({
-          id: 'ca-app-pub-4603514470539833/8541052423'
-        })
-        admob.prepareInterstitial()
-        admob.showInterstitial()
-        console.log(admob)
-      }
+      let admob = window.plugins.AdMob
+      admob.prepareInterstitial({
+        id: 'ca-app-pub-4603514470539833/8541052423',
+        isTesting: false
+      })
+      admob.showInterstitial()
     },
     backScreenToNormal () {
       let brightness = cordova.plugins.brightness
