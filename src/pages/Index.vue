@@ -140,9 +140,9 @@ export default {
               audio.loop = false
               audio.pause()
               navigator.vibrate(0)
-              cordova.plugins.foregroundService.stop()
               navigator.geolocation.clearWatch(this.locationObject)
               this.backScreenToNormal()
+              this.showAdMob()
             }
           }, 'Finalizar alarme', ['Sim', 'Não'])
         } else {
@@ -155,9 +155,6 @@ export default {
       console.warn('ERRO(' + err.code + '): ' + err.message)
     },
     beginTravel () {
-      if (this.$q.platform.is.cordova) {
-        cordova.plugins.foregroundService.start('Viagem Iniciada', '', 'departure_board')
-      }
       if (this.locationObject !== undefined) {
         navigator.geolocation.clearWatch(this.locationObject)
       }
@@ -174,7 +171,6 @@ export default {
       this.isAvaliable = true
       navigator.geolocation.clearWatch(this.locationObject)
       if (this.$q.platform.is.cordova) {
-        cordova.plugins.foregroundService.stop()
         this.backScreenToNormal()
       }
     },
@@ -199,6 +195,17 @@ export default {
           this.backScreenToNormal()
         }
       })
+    },
+    showAdMob () {
+      if (window.plugins && window.plugins.AdMob) {
+        let admob = window.plugins.AdMob
+        admob.interstitial.config({
+          id: 'ca-app-pub-4603514470539833/8541052423'
+        })
+        admob.prepareInterstitial()
+        admob.showInterstitial()
+        console.log(admob)
+      }
     },
     backScreenToNormal () {
       let brightness = cordova.plugins.brightness

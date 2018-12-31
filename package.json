@@ -12,7 +12,8 @@
     "start": "node src-ssr/index.js"
   },
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "cordova-plugin-admob-free": "^0.25.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

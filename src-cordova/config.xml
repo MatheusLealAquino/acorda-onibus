@@ -26,11 +26,14 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
-    <plugin name="cordova-plugin-foreground-service" spec="^1.1.0" />
     <plugin name="cordova.plugins.diagnostic" spec="^4.0.10" />
     <plugin name="cordova-plugin-dialogs" spec="^2.0.1" />
     <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
     <plugin name="cordova-plugin-brightness" spec="^0.2.0" />
     <plugin name="org.awokenwell.proximity" spec="https://github.com/awoken-well/cordova-plugin-proximity.git" />
     <engine name="android" spec="^7.1.4" />
+    <plugin name="cordova-plugin-admob-free" spec="0.25.0">
+        <variable name="ADMOB_APP_ID" value="ca-app-pub-4603514470539833~8886389551" />
+    </plugin>
+    <engine name="browser" spec="~5.0.4" />
 </widget>
