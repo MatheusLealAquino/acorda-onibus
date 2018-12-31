@@ -200,10 +200,6 @@ export default {
     },
     showAdMob () {
       let admob = window.plugins.AdMob
-      admob.prepareInterstitial({
-        id: 'ca-app-pub-4603514470539833/8541052423',
-        isTesting: false
-      })
       admob.showInterstitial()
     },
     backScreenToNormal () {
@@ -215,6 +211,13 @@ export default {
   },
   mounted () {
     if (this.$q.platform.is.cordova) {
+      // Initializing admob
+      let admob = window.plugins.AdMob
+      admob.prepareInterstitial({
+        id: 'ca-app-pub-4603514470539833/8541052423',
+        isTesting: false,
+        autoShow: false
+      })
       cordova.plugins.diagnostic.isLocationEnabled(function (enabled) {
         if (!enabled) {
           navigator.notification.confirm('Ativar GPS ?', buttonIndex => {
