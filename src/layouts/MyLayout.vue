@@ -31,7 +31,7 @@
         inset-delimiter
       >
         <q-list-header>Menu</q-list-header>
-        <q-item @click="$router.push('/')">
+        <q-item to="/">
           <q-item-side icon="commute" />
           <q-item-main label="Iniciar Viagem" />
         </q-item>
