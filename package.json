@@ -12,7 +12,7 @@
     "start": "node src-ssr/index.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "cordova-plugin-admob-free": "^0.25.0"
   },
   "devDependencies": {
@@ -30,7 +30,7 @@
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^4.3.0",
-    "quasar-cli": "^0.17.0",
+    "quasar-cli": "^0.17.26",
     "strip-ansi": "=3.0.1"
   },
   "engines": {
